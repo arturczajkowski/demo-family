@@ -19,21 +19,15 @@ public class PersonalDataSpecification implements Specification<PersonalData> {
         this.personalData = filter;
     }
 
-
     @Override
     public Predicate toPredicate(Root<PersonalData> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-     Predicate p = criteriaBuilder.and();
-
-     if(!StringUtils.isEmpty(personalData.getLastName())){
-         p.getExpressions().add(criteriaBuilder.like(root.get("name"),"%"+personalData.getLastName()+"%"));
-     }
-
-     if(personalData.getType() != null){
-         p.getExpressions().add(criteriaBuilder.equal(root.get("type"), personalData.getType()));
-     }
-
-
-     return p;
-
+        Predicate p = criteriaBuilder.and();
+        if (!StringUtils.isEmpty(personalData.getLastName())) {
+            p.getExpressions().add(criteriaBuilder.like(root.get("name"), "%" + personalData.getLastName() + "%"));
+        }
+        if (personalData.getType() != null) {
+            p.getExpressions().add(criteriaBuilder.equal(root.get("type"), personalData.getType()));
+        }
+        return p;
     }
 }

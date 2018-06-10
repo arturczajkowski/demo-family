@@ -5,7 +5,7 @@ import phonebookservicecom.example.demo.entity.PersonalData;
 
 public interface PersonalDataDtoConverters {
 
-    public PersonalDataDto convert(PersonalData personalData);
+    PersonalDataDto convert(PersonalData personalData);
 
-    public PersonalData convertDto(PersonalDataDto personalDataDto);
+    PersonalData convertDto(PersonalDataDto personalDataDto);
 }

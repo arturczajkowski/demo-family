@@ -18,7 +18,6 @@ public class PhoneBookController {
     @Autowired
     PersonalDataService personalDataService;
 
-
     @RequestMapping(value = "/")
     public List<PersonalDataDto> findAll() {
         return personalDataService.findAll();

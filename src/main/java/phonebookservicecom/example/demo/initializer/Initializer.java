@@ -14,8 +14,7 @@ public class Initializer {
     @Autowired
     private PersonalDataRepository personalDataRepository;
 
-
-    @PostConstruct //przy inicjalizacji beanu wywoła to medote;
+    @PostConstruct
     public void initialzeDate(){
         personalDataRepository.save(new PersonalData(1,"Artur","Czajkowski","792905836", TelephonNumberType.HOMEPHONE));
         personalDataRepository.save(new PersonalData(2,"Patryk", "Czajkowski","543543432",TelephonNumberType.WORKPHONE));
@@ -24,6 +23,5 @@ public class Initializer {
         personalDataRepository.save(new PersonalData(5,"Dawid", "Kielbasa","546534432",TelephonNumberType.WORKPHONE));
         personalDataRepository.save(new PersonalData(6,"Michal", "Zawadki","54223432",TelephonNumberType.HOMEPHONE));
         personalDataRepository.save(new PersonalData(7,"Emil", "Bik","653634542523",TelephonNumberType.HOMEPHONE));
-
     }
 }

@@ -1,10 +1,16 @@
 package phonebookservicecom.example.demo.dto;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class PersonalDataDto {
 
+
     private Integer id;
+    @NotEmpty
     private String firstName;
+    @NotEmpty
     private String lastName;
+    @NotEmpty
     private String phoneNumber;
     private String type;
 

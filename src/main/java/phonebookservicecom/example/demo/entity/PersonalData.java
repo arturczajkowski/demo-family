@@ -3,16 +3,13 @@ package phonebookservicecom.example.demo.entity;
 import javax.persistence.*;
 
 @Entity
-public class PersonalData {
+public class  PersonalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
     private String firstName;
-
     private String lastName;
-
     private String phoneNumer;
 
     @Enumerated

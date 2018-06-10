@@ -13,12 +13,13 @@ import phonebookservicecom.example.demo.exceptions.NewEntryExists;
 import phonebookservicecom.example.demo.repository.PersonalDataRepository;
 import phonebookservicecom.example.demo.repository.specification.PersonalDataSpecification;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class PersonalDataServiceImpl implements PersonalDataService{
+public class PersonalDataServiceImpl implements PersonalDataService {
 
     @Autowired
     private PersonalDataRepository personalDataRepository;
@@ -51,39 +52,35 @@ public class PersonalDataServiceImpl implements PersonalDataService{
                 .collect(Collectors.toList());
     }
 
-
-
     @Override
     public PersonalDataDto findById(Integer id) {
         PersonalData personalData = personalDataRepository.findOne(id);
-      return personalDataDtoConverters.convert(personalData);
-
-
+        return personalDataDtoConverters.convert(personalData);
     }
 
     @Override
     public List<PersonalDataDto> findByLastNameAndType(String lastName, String type) {
-            //assing product filters
-            PersonalData filterProduct = new PersonalData();
-            filterProduct.setLastName(lastName);
+        //assing product filters
+        PersonalData filterProduct = new PersonalData();
+        filterProduct.setLastName(lastName);
 
-            TelephonNumberType telephonNumberType = null;
-            if (!StringUtils.isEmpty(type)) {
-                telephonNumberType = TelephonNumberType.valueOf(type);
-                filterProduct.setType(telephonNumberType);
-            }
-            return StreamSupport.stream(
-                    personalDataRepository.findAll(new PersonalDataSpecification(filterProduct)).spliterator(), true)
-                    .map(product -> personalDataDtoConverters.convert(product))
-                    .collect(Collectors.toList());
+        TelephonNumberType telephonNumberType = null;
+        if (!StringUtils.isEmpty(type)) {
+            telephonNumberType = TelephonNumberType.valueOf(type);
+            filterProduct.setType(telephonNumberType);
         }
+        return StreamSupport.stream(
+                personalDataRepository.findAll(new PersonalDataSpecification(filterProduct)).spliterator(), true)
+                .map(product -> personalDataDtoConverters.convert(product))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public void save(PersonalDataDto personalDataDto) throws NewEntryExists {
         PersonalData personalData = personalDataDtoConverters.convertDto(personalDataDto);
-        List<PersonalDataDto> productsByName=this.findByLastName(personalDataDto.getLastName());
+        List<PersonalDataDto> productsByName = this.findByLastName(personalDataDto.getLastName());
         if (!CollectionUtils.isEmpty(productsByName)) {
-            throw new NewEntryExists("Product with name "+personalDataDto.getLastName()+ " already exists");
+            throw new NewEntryExists("Product with name " + personalDataDto.getLastName() + " already exists");
         } else {
             personalDataRepository.save(personalData);
         }

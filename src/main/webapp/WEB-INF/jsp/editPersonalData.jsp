@@ -4,8 +4,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
-<div>Siema</div>
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Edit PersonalData</title>
@@ -18,7 +16,6 @@
     </style>
 
 </head>
-
 
 <body>
 <h2>Edit product</h2>
@@ -66,8 +63,6 @@
         <form:hidden path="id" id="id"/>
     </table>
 </form:form>
-
-
 <a href="<c:url value='/phonebook/new' />">Add new product</a>
 </body>
 </html>

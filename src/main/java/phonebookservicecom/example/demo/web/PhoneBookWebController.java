@@ -31,26 +31,22 @@ public class PhoneBookWebController {
     @RequestMapping(value = "/phonebook/list", produces = MediaType.TEXT_HTML_VALUE,
             method = RequestMethod.GET)
     public String findPhoneBookList(@RequestParam(value = "personalDataName", required = false) String personalDataName,
-                               @RequestParam(value = "personalDataType", required = false) String personalDataType, Map<String, Object> model) {
-        List<PersonalDataDto> personalDataDtoList = personalDataService.findByLastNameAndType(personalDataName,personalDataType);
-        model.put("personalDataList", personalDataDtoList );
+                                    @RequestParam(value = "personalDataType", required = false) String personalDataType, Map<String, Object> model) {
+        List<PersonalDataDto> personalDataDtoList = personalDataService.findByLastNameAndType(personalDataName, personalDataType);
+        model.put("personalDataList", personalDataDtoList);
         return "personalData";
     }
-    //TODO nowa metoda
 
     @RequestMapping(value = "/phonebook/list/search/number", produces = MediaType.TEXT_HTML_VALUE,
             method = RequestMethod.GET)
     public String searchPhoneNumer(@RequestParam(value = "phoneNumber", required = false) String phoneNumber,
                                    Map<String, Object> model) {
         List<PersonalDataDto> personalDataDtoList = personalDataService.findByPhoneNumber(phoneNumber);
-        model.put("personalDataList", personalDataDtoList );
+        model.put("personalDataList", personalDataDtoList);
         return "personalData";
     }
 
-
-
-
-    private Map<String, String> getProductTypesAsMap() {
+    private Map<String, String> getTelephonNumberTypesAsMap() {
         Map<String, String> personalTypes = new HashMap<String, String>();
         for (TelephonNumberType numberType : TelephonNumberType.values()) {
             personalTypes.put(numberType.name(), numberType.getValue());
@@ -61,26 +57,25 @@ public class PhoneBookWebController {
     @RequestMapping(value = "/phonebook/new")
     public String addNumer(Map<String, Object> model) {
         model.put("personalDataModel", new PersonalDataDto());
-        model.put("personalDataType", getProductTypesAsMap());
+        model.put("personalDataType", getTelephonNumberTypesAsMap());
         model.put("edit", false);
         return "editPersonalData";
     }
 
-
     @RequestMapping(value = "/phonebook/save", method = RequestMethod.POST)
     public String saveProduct(@Valid @ModelAttribute(value = "personalDataModel") PersonalDataDto personalDataDto,
                               BindingResult result, Map<String, Object> model) {
-        model.put("personalDataTypes", getProductTypesAsMap());
+        model.put("personalDataTypes", getTelephonNumberTypesAsMap());
         model.put("personalDataModel", personalDataDto);
         if (result.hasErrors()) {
-            return "editProduct";
+            return "editPersonalData";
         } else {
             try {
                 personalDataService.save(personalDataDto);
             } catch (NewEntryExists e) {
                 model.put("errorMessage",
                         messageSource.getMessage("productModel.nameExists",
-                                new String[] {personalDataDto.getLastName()}, Locale.getDefault()));
+                                new String[]{personalDataDto.getLastName()}, Locale.getDefault()));
                 return "editPersonalData";
             }
             return "redirect:/phonebook/list";
@@ -91,10 +86,11 @@ public class PhoneBookWebController {
     public String editTheEntry(@PathVariable Integer id, Map<String, Object> model) {
         PersonalDataDto personalDataDto = personalDataService.findById(id);
         model.put("personalDataModel", personalDataDto);
-        model.put("personalDataType", getProductTypesAsMap());
+        model.put("personalDataType", getTelephonNumberTypesAsMap());
         model.put("edit", true);
         return "editPersonalData";
     }
+
     @RequestMapping(value = "/phonebook/delete/{id}")
     public String deleteTheEntry(@PathVariable Integer id) {
         personalDataService.delete(id);

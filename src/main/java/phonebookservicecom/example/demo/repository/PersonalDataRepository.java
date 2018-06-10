@@ -12,13 +12,7 @@ import java.util.List;
 @Repository
 public interface PersonalDataRepository extends CrudRepository<PersonalData,Integer>, JpaSpecificationExecutor<PersonalData> {
 
-    public List<PersonalData> findAll(Specification<PersonalData> specification);
-
-    public List<PersonalData> findByLastName(String lastName);
-
-    public List<PersonalData> findByPhoneNumer(String phoneNumber);
-
-    public List<PersonalData> findByLastNameAndType(String LastName, TelephonNumberType telephonNumberType);
-
-
+    List<PersonalData> findAll(Specification<PersonalData> specification);
+    List<PersonalData> findByLastName(String lastName);
+    List<PersonalData> findByPhoneNumer(String phoneNumber);
 }

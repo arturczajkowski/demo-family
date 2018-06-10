@@ -5,7 +5,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Ksiązka Telefoniczna by Artur Czajkowski</title>
@@ -42,7 +41,7 @@
             <td>${personalData.lastName}</td>
             <td>${personalData.phoneNumber}</td>
             <td>${personalData.type}</td>
-            <td><a href="<c:url value='/phonebook/edit/${personalData.id}' />">Edit</a></td>
+            <td><a href="<c:url value='/phonebook/edit/${personalData.id}' />">Edit lastName</a></td>
             <td><a href="<c:url value='/phonebook/delete/${personalData.id}' />"  data-method="delete">Delete</a></td>
         </tr>
     </c:forEach>
