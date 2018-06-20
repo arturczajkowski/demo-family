@@ -21,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/familyData","/family/list").permitAll()
-                .antMatchers("/phonebook/list/search/number", "/phonebook/new", "/phonebook/delete", "/phonebook/edit").hasRole("USER")
+                .antMatchers("/father/new", "/child/new", "/family/list/search").hasRole("USER")
                 .anyRequest().authenticated()
                 .and().formLogin().defaultSuccessUrl("/")
                 .and().logout().logoutSuccessUrl("/");
