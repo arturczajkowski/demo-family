@@ -20,7 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/phonebook/list").permitAll()
+                .antMatchers("/", "/familyData","/family/list").permitAll()
                 .antMatchers("/phonebook/list/search/number", "/phonebook/new", "/phonebook/delete", "/phonebook/edit").hasRole("USER")
                 .anyRequest().authenticated()
                 .and().formLogin().defaultSuccessUrl("/")

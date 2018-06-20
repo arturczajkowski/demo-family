@@ -6,11 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import phonebookservicecom.example.demo.dto.PersonalDataDto;
-import phonebookservicecom.example.demo.entity.PersonalData;
-import phonebookservicecom.example.demo.entity.TelephonNumberType;
+import phonebookservicecom.example.demo.dto.ChildDto;
+import phonebookservicecom.example.demo.dto.FatherDto;
+import phonebookservicecom.example.demo.entity.Sex;
 import phonebookservicecom.example.demo.exceptions.NewEntryExists;
-import phonebookservicecom.example.demo.services.PersonalDataService;
+import phonebookservicecom.example.demo.services.ChildService;
+import phonebookservicecom.example.demo.services.FatherService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -22,78 +23,117 @@ import java.util.Map;
 @Controller
 public class PhoneBookWebController {
 
+
     @Autowired
-    private PersonalDataService personalDataService;
+    private FatherService fatherService;
+
+    @Autowired
+    private ChildService childService;
 
     @Autowired
     private MessageSource messageSource;
 
-    @RequestMapping(value = "/phonebook/list", produces = MediaType.TEXT_HTML_VALUE,
+    @RequestMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE,
             method = RequestMethod.GET)
-    public String findPhoneBookList(@RequestParam(value = "personalDataName", required = false) String personalDataName,
-                                    @RequestParam(value = "personalDataType", required = false) String personalDataType, Map<String, Object> model) {
-        List<PersonalDataDto> personalDataDtoList = personalDataService.findByLastNameAndType(personalDataName, personalDataType);
-        model.put("personalDataList", personalDataDtoList);
-        return "personalData";
+    public String familyTitle(){
+        return "familiTitle";
     }
 
-    @RequestMapping(value = "/phonebook/list/search/number", produces = MediaType.TEXT_HTML_VALUE,
+    @RequestMapping(value = "/family/list", produces = MediaType.TEXT_HTML_VALUE,
             method = RequestMethod.GET)
-    public String searchPhoneNumer(@RequestParam(value = "phoneNumber", required = false) String phoneNumber,
-                                   Map<String, Object> model) {
-        List<PersonalDataDto> personalDataDtoList = personalDataService.findByPhoneNumber(phoneNumber);
-        model.put("personalDataList", personalDataDtoList);
-        return "personalData";
+    public String findFamilyList(@RequestParam(value = "fatherLastName", required = false) String fatherLastName,
+                                    @RequestParam(value = "childLastName", required = false) String childLastName, Map<String, Object> model) {
+        List<FatherDto> fatherDtoList = fatherService.findAll();
+        List<ChildDto> childDataDtoList = childService.findChildAll();
+        model.put("fatherDataList", fatherDtoList);
+        model.put("childDataList", childDataDtoList);
+        return "familyData";
     }
 
     private Map<String, String> getTelephonNumberTypesAsMap() {
-        Map<String, String> personalTypes = new HashMap<String, String>();
-        for (TelephonNumberType numberType : TelephonNumberType.values()) {
-            personalTypes.put(numberType.name(), numberType.getValue());
+        Map<String, String> sexTypes = new HashMap<String, String>();
+        for (Sex sexType : Sex.values()) {
+            sexTypes.put(sexType.name(), sexType.getValue());
         }
-        return personalTypes;
+        return sexTypes;
     }
 
-    @RequestMapping(value = "/phonebook/new")
-    public String addNumer(Map<String, Object> model) {
-        model.put("personalDataModel", new PersonalDataDto());
-        model.put("personalDataType", getTelephonNumberTypesAsMap());
+    @RequestMapping(value = "/father/new")
+    public String addFather(Map<String, Object> model) {
+        model.put("fatherDataModel", new FatherDto());
+//        model.put("childDataModel", new ChildDto());
+//        model.put("childDataType", getTelephonNumberTypesAsMap());
         model.put("edit", false);
-        return "editPersonalData";
+        return "editFatherData";
     }
 
-    @RequestMapping(value = "/phonebook/save", method = RequestMethod.POST)
-    public String saveProduct(@Valid @ModelAttribute(value = "personalDataModel") PersonalDataDto personalDataDto,
+        @RequestMapping(value = "/father/save", method = RequestMethod.POST)
+    public String saveFather(@Valid @ModelAttribute(value = "fatherDataModel") FatherDto fatherDtoData,
                               BindingResult result, Map<String, Object> model) {
-        model.put("personalDataTypes", getTelephonNumberTypesAsMap());
-        model.put("personalDataModel", personalDataDto);
+        model.put("fatherDataModel", fatherDtoData);
         if (result.hasErrors()) {
-            return "editPersonalData";
+            return "editFatherData";
         } else {
             try {
-                personalDataService.save(personalDataDto);
+                fatherService.save(fatherDtoData);
             } catch (NewEntryExists e) {
                 model.put("errorMessage",
                         messageSource.getMessage("productModel.nameExists",
-                                new String[]{personalDataDto.getLastName()}, Locale.getDefault()));
-                return "editPersonalData";
+                                new String[]{fatherDtoData.getLastName()}, Locale.getDefault()));
+                return "editFatherData";
             }
-            return "redirect:/phonebook/list";
+            return "redirect:/family/list";
         }
     }
 
-    @RequestMapping(value = "/phonebook/edit/{id}")
-    public String editTheEntry(@PathVariable Integer id, Map<String, Object> model) {
-        PersonalDataDto personalDataDto = personalDataService.findById(id);
-        model.put("personalDataModel", personalDataDto);
-        model.put("personalDataType", getTelephonNumberTypesAsMap());
-        model.put("edit", true);
-        return "editPersonalData";
+    @RequestMapping(value = "/child/new")
+    public String addChild(Map<String, Object> model) {
+        model.put("childDataModel", new ChildDto());
+        model.put("childDataType", getTelephonNumberTypesAsMap());
+        model.put("edit", false);
+        return "editChildData";
     }
 
-    @RequestMapping(value = "/phonebook/delete/{id}")
-    public String deleteTheEntry(@PathVariable Integer id) {
-        personalDataService.delete(id);
-        return "redirect:/phonebook/list";
+
+    @RequestMapping(value = "/child/save", method = RequestMethod.POST)
+    public String saveChild(@Valid @ModelAttribute(value = "childDataModel") ChildDto childDto,
+                              BindingResult result, Map<String, Object> model) {
+        model.put("childDataTypes", getTelephonNumberTypesAsMap());
+        model.put("childDataModel", childDto);
+        if (result.hasErrors()) {
+            return "editChildData";
+        } else {
+            try {
+                childService.saveChild(childDto);
+            } catch (NewEntryExists e) {
+                model.put("errorMessage",
+                        messageSource.getMessage("productModel.nameExists",
+                                new String[]{childDto.getLastName()}, Locale.getDefault()));
+                return "editChildData";
+            }
+            return "redirect:/family/list";
+        }
     }
+
+
+    @RequestMapping(value = "/family/list/search", produces = MediaType.TEXT_HTML_VALUE,
+            method = RequestMethod.GET)
+    public String searchPhoneNumer(@RequestParam(value = "searchFamily", required = false) String lastName,
+                                   Map<String, Object> model) {
+        List<FatherDto> fatherDtoList = fatherService.findByLastName(lastName);
+        List<ChildDto> childDtoList = childService.findByChildLastName(lastName);
+        model.put("childDataList", childDtoList);
+        model.put("fatherDataList", fatherDtoList);
+        return "familyData";
+    }
+
+
+
+
+//
+//    @RequestMapping(value = "/phonebook/delete/{id}")
+//    public String deleteTheEntry(@PathVariable Integer id) {
+//        personalDataService.delete(id);
+//        return "redirect:/phonebook/list";
+//    }
 }

@@ -6,25 +6,23 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Edit PersonalData</title>
-
+    <title>Add Father to Family</title>
     <style>
         tr:first-child{
             font-weight: bold;
             background-color: #C6C9C4;
         }
     </style>
-
 </head>
 
 <body>
-<h2>Edit product</h2>
+<h2>Add Child</h2>
 
 <c:if test="${not empty errorMessage}">
     <div>${errorMessage}</div>
 </c:if>
 
-<form:form method="POST" modelAttribute="personalDataModel" action="/phonebook/save">
+<form:form method="POST" modelAttribute="childDataModel" action="/child/save">
     <table>
         <tr>
             <td>First Name</td>
@@ -37,25 +35,31 @@
             <td><form:errors path="lastName" id="lastName"/></td>
         </tr>
         <tr>
-            <td>Phone number</td>
-            <td><form:input path="phoneNumber" id="phoneNumber"/></td>
-            <td><form:errors path="phoneNumber" id="phoneNumber"/></td>
+            <td>Pesel</td>
+            <td><form:input path="pesel" id="pesel"/></td>
+            <td><form:errors path="pesel" id="pesel"/></td>
         </tr>
 
         <tr>
-            <td>Number Type</td>
-            <td><form:select path="type" id="type" items="${personalDataType}"/>
+            <td>Dzien urodzin</td>
+            <td><form:input path="dateOfBirth" id="dateOfBirth"/></td>
+            <td><form:errors path="dateOfBirth" id="dateOfBirth"/></td>
+        </tr>
+        <tr>
+            <td>Sex Type</td>
+            <td><form:select path="type" id="type" items="${childDataType}"/>
             </td>
         </tr>
+
         <tr>
             <td></td>
             <td>
                 <c:choose>
                     <c:when test="${edit}">
-                        <input type="submit" value="Update Product"/>
+                        <input type="submit" value="Update Name"/>
                     </c:when>
                     <c:otherwise>
-                        <input type="submit" value="Add Product"/>
+                        <input type="submit" value="Add Name"/>
                     </c:otherwise>
                 </c:choose>
             </td>
@@ -63,6 +67,5 @@
         <form:hidden path="id" id="id"/>
     </table>
 </form:form>
-<a href="<c:url value='/phonebook/new' />">Add new product</a>
 </body>
 </html>

@@ -1,20 +1,15 @@
 package phonebookservicecom.example.demo.dto;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-public class PersonalDataDto {
-
+public class ChildDto {
 
     private Integer id;
-    @NotEmpty
     private String firstName;
-    @NotEmpty
     private String lastName;
-    @NotEmpty
-    private String phoneNumber;
+    private String pesel;
+    private String dateOfBirth;
     private String type;
 
-    public PersonalDataDto() {
+    public ChildDto() {
     }
 
     public Integer getId() {
@@ -41,19 +36,27 @@ public class PersonalDataDto {
         this.lastName = lastName;
     }
 
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 }

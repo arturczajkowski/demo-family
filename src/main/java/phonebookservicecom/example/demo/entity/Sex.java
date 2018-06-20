@@ -1,12 +1,12 @@
 package phonebookservicecom.example.demo.entity;
 
-public enum TelephonNumberType {
+public enum Sex {
 
-    HOMEPHONE("domowy"),WORKPHONE("sluzbowy");
+    BOY("chlopiec"),GIRL("dziewczynka");
 
     private String value;
 
-    TelephonNumberType(String value) {
+    Sex(String value) {
         this.value = value;
     }
 

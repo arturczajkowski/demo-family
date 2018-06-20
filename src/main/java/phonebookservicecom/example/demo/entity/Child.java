@@ -3,27 +3,29 @@ package phonebookservicecom.example.demo.entity;
 import javax.persistence.*;
 
 @Entity
-public class  PersonalData {
+public class Child{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String firstName;
     private String lastName;
-    private String phoneNumer;
+    private String pesel;
+    private String dateOfBirth;
 
     @Enumerated
-    private TelephonNumberType type;
+    private Sex type;
 
-    public PersonalData(){
+    public Child(){
 
     }
 
-    public PersonalData(Integer id,String firstName, String lastName, String phoneNumber, TelephonNumberType type) {
+    public Child(Integer id, String firstName, String lastName, String pesel, String dateOfBirth,Sex type) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNumer = phoneNumber;
+        this.pesel = pesel;
+        this.dateOfBirth = dateOfBirth;
         this.type = type;
     }
 
@@ -51,19 +53,26 @@ public class  PersonalData {
         this.lastName = lastName;
     }
 
-    public TelephonNumberType getType() {
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Sex getType() {
         return type;
     }
-
-    public void setType(TelephonNumberType type) {
+    public void setType(Sex type) {
         this.type = type;
-    }
-
-    public String getPhoneNumer() {
-        return phoneNumer;
-    }
-
-    public void setPhoneNumer(String phoneNumer) {
-        this.phoneNumer = phoneNumer;
     }
 }
